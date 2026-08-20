@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Game Overlay</string>
+    <string name="overlay_channel_name">Overlay controls</string>
+    <string name="overlay_channel_description">Shows when the floating overlay is active</string>
+</resources>
