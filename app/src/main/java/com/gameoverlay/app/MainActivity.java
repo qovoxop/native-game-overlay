@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,30 @@ public final class MainActivity extends Activity {
         TextView stop = action("Stop overlay");
         stop.setOnClickListener(v -> stopOverlay());
         content.addView(stop, margins(0, 0, 0, 26));
+
+        TextView speedTitle = label("Fly speed", 20, Color.WHITE);
+        speedTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        content.addView(speedTitle, margins(0, 0, 0, 6));
+        TextView speedValue = label("", 14, Color.rgb(168, 179, 199));
+        content.addView(speedValue, margins(0, 0, 0, 4));
+        SeekBar speed = new SeekBar(this);
+        speed.setMax(200);
+        speed.setProgress(getSharedPreferences("overlay", MODE_PRIVATE).getInt("speed", 100));
+        speed.setContentDescription("Fly speed for the overlay button");
+        speed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override public void onProgressChanged(SeekBar bar, int value, boolean fromUser) {
+                int actual = Math.max(25, value);
+                speedValue.setText(String.format(java.util.Locale.US, "%.2fx", actual / 100f));
+                if (fromUser) getSharedPreferences("overlay", MODE_PRIVATE).edit().putInt("speed", actual).apply();
+            }
+            @Override public void onStartTrackingTouch(SeekBar bar) {}
+            @Override public void onStopTrackingTouch(SeekBar bar) {}
+        });
+        speed.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            int value = Math.max(25, speed.getProgress());
+            speedValue.setText(String.format(java.util.Locale.US, "%.2fx", value / 100f));
+        });
+        content.addView(speed, margins(0, 0, 0, 24));
 
         TextView details = label("How it works", 20, Color.WHITE);
         details.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
