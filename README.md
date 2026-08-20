@@ -4,7 +4,7 @@ This is a native Android app built with Java and Gradle. It does not use Expo.
 
 ## Safety and scope
 
-The app provides a visible, user-controlled floating shortcut. It uses Android's official overlay permission and a foreground service with an ongoing notification. It does not inject code, modify the operating system, read other apps' private data, capture the screen, or bypass Android permissions.
+The app provides a visible, user-controlled floating shortcut with a persistent Fly speed control. The slider changes how quickly the floating button responds to dragging and is stored locally. It uses Android's official overlay permission and a foreground service with an ongoing notification. It does not inject code, modify the operating system, read other apps' private data, capture the screen, or bypass Android permissions.
 
 ## Build locally
 
