@@ -107,15 +107,17 @@ public final class OverlayService extends Service {
     private final class DragHandler implements View.OnTouchListener {
         private int downX, downY, startX, startY;
         private long downTime;
+        private float speed = 1f;
         @Override public boolean onTouch(View view, MotionEvent event) {
             switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
                     downX = (int) event.getRawX(); downY = (int) event.getRawY();
                     startX = params.x; startY = params.y; downTime = System.currentTimeMillis();
+                    speed = Math.max(0.25f, getSharedPreferences("overlay", MODE_PRIVATE).getInt("speed", 100) / 100f);
                     return true;
                 case MotionEvent.ACTION_MOVE:
-                    params.x = startX - ((int) event.getRawX() - downX);
-                    params.y = startY + ((int) event.getRawY() - downY);
+                    params.x = startX - (int) (((int) event.getRawX() - downX) * speed);
+                    params.y = startY + (int) (((int) event.getRawY() - downY) * speed);
                     windowManager.updateViewLayout(bubble, params);
                     return true;
                 case MotionEvent.ACTION_UP:
